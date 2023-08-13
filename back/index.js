@@ -26,7 +26,14 @@ app.get("/items", async (req, res)=>{
     if (!db_loaded)
       __database_event= load_db();
    await __database_event;
-    res.json(database_content);
+   let to_send = []
+   let current_element = {}
+   for (key in database_content){
+      current_element = database_content[key]
+      current_element["product_id"] = key
+      to_send.push(current_element)
+   }
+    res.json(current_element);
 });
 
 app.put("/buying_items", (req, res)=>{
