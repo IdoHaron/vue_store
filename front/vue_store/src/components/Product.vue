@@ -1,5 +1,4 @@
-<script lang="ts"> 
-import { emit } from "cluster";
+<script setup lang="ts"> 
 import { defineProps } from "vue"
 const props = defineProps({ 
     product_img: String, product_name: String, product_id: Number, product_price: Number, product_amount:Number, product_description: String 
@@ -10,18 +9,29 @@ const data_for_cart = ()=> {return {
     "id": props.product_id,
     "price": props.product_price
     }};
-
+console.log('props:');
+console.log(props);
 function add_to_cart_evet(){
     emit("add_item_to_cart", data_for_cart);
 }
 </script> 
 <template> 
-    <div :key="props.product_id"> 
-        <img :src="props.product_img"> <br> 
+<div class="Product">
+    <div :key="props.product_id" class="ProductDesign"> 
+        <img :src="props.product_img" width="300" height="300"> <br> 
         <h2>{{ props.product_name }}</h2> <br> 
         product description: {{ props.product_description }} <br> 
         product price: {{ props.product_price }} 
-        product amount: {{product_amount}}
+        <br>
+        product amount: {{props.product_amount}}
+        <br>
         <slot> </slot>
     </div>
+</div>
 </template>
+<style scoped>
+.Product{
+      flex-direction: column;
+}
+</style>
+

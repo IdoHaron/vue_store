@@ -17,26 +17,28 @@ fetch(SERVER+"/items", {
   answer.value = JSON.parse(tex);
   console.log(answer.value);
 });
-
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <ProductToBuy v-for="product in answer" v-bind:key="product['product_id']" 
-            :product_name="product['product_name']" :product_img="product['product_img']"
-        :product_id="product['product_id']" :product_price="product['product_price']"
-        :product_description="product['product_description']" :product_amount="product['product_amount']">
-      </ProductToBuy>
-      <Cart />
-    </div>
-  </header>
-
+  <div class="ProductDesign">
+    <ProductToBuy v-for="product in answer" v-bind:key="product['product_id']" 
+    :product_name="product['product_name']" :product_img="product['product_image']"
+    :product_id="product['product_id']" :product_price="product['product_price']"
+    :product_description="product['product_description']" :product_amount="product['product_amount']">
+  </ProductToBuy>
+  </div>
+  <Cart />
 </template>
 
 <style scoped>
+
+
+.ProductDesign{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
 header {
   line-height: 1.5;
   max-height: 100vh;

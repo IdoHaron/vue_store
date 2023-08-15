@@ -1,21 +1,23 @@
 {
-    "0":
-    {
-        "product_price": 10,
-        "product_name": "",
-        "product_descrption": "",
-        "product_image": ""
+    "0": {
+        "product_price": 5,
+        "product_name": "flowers",
+        "product_descrption": "a bouquet of flowes",
+        "product_image": "https://img.freepik.com/free-photo/top-view-beautiful-roses-bouquet-with-pink-ribbon_23-2148822309.jpg?w=2000",
+        "product_amount": 10
     },
-    "1":{        
-        "product_price": 50,
-        "product_name": "",
-        "product_descrption": "",
-        "product_image": ""
+    "1": {
+        "product_price": 15,
+        "product_name": "steak",
+        "product_descrption": "a raw steak",
+        "product_image": "https://cdn.shopify.com/s/files/1/0338/9934/8108/files/how-to-tell-if-raw-steak-is-bad-or-spoiled-2_480x480.jpg?v=1642469895",
+        "product_amount": 5
     },
-    "2":{
+    "2": {
         "product_price": 2,
-        "product_name": "",
-        "product_descrption": "",
-        "product_image": ""
+        "product_name": "chocolate",
+        "product_descrption": "a small bar of chocolate",
+        "product_image": "https://www.alphafoodie.com/wp-content/uploads/2020/06/dark-chocolate-bar-square.jpeg",
+        "product_amount": 2
     }
 }

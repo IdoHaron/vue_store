@@ -20,20 +20,19 @@ async function load_db(){
 async function save_db(){
    await ps_fs.writeFile("products.json", JSON.stringify(database_content));
 }
+__database_event = load_db();
 app.use(cors())
 app.get("/items", async (req, res)=>{
-   await __database_event;
-    if (!db_loaded)
-      __database_event= load_db();
    await __database_event;
    let to_send = []
    let current_element = {}
    for (key in database_content){
-      current_element = database_content[key]
+      current_element = Object.assign({}, database_content[key])
       current_element["product_id"] = key
       to_send.push(current_element)
    }
-    res.json(current_element);
+   console.log(to_send);
+    res.json(to_send);
 });
 
 app.put("/buying_items", (req, res)=>{
