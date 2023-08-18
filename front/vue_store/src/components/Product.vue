@@ -4,16 +4,6 @@ const props = defineProps({
     product_img: String, product_name: String, product_id: Number, product_price: Number, product_amount:Number, product_description: String 
     });
 
-const data_for_cart = ()=> {return {
-    "name":props.product_name,  
-    "id": props.product_id,
-    "price": props.product_price
-    }};
-console.log('props:');
-console.log(props);
-function add_to_cart_evet(){
-    emit("add_item_to_cart", data_for_cart);
-}
 </script> 
 <template> 
 <div class="Product">

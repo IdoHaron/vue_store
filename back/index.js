@@ -22,39 +22,65 @@ async function save_db(){
 }
 __database_event = load_db();
 app.use(cors())
+app.use(express.json());
+app.use(express.json());
 app.get("/items", async (req, res)=>{
    await __database_event;
    let to_send = []
    let current_element = {}
+   console.log(database_content);
    for (key in database_content){
       current_element = Object.assign({}, database_content[key])
       current_element["product_id"] = key
       to_send.push(current_element)
    }
-   console.log(to_send);
     res.json(to_send);
 });
 
-app.put("/buying_items", (req, res)=>{
-      __database_event = handle_database_update();
+app.post("/buying_items", (req, res)=>{
+      __database_event = handle_database_update(req.body, res);
 })
 
-async function handle_database_update(req, res){
+async function handle_database_update(message, res){
    await __database_event;
+   const all_items_data = message;
    if (!db_loaded)
       await load_db();
+   let single_item_parsing_status = {}
+   console.log(all_items_data)
+   for (const item in all_items_data){
+      single_item_parsing_status =  await single_item_update(all_items_data[item]);
+      if (!single_item_parsing_status["success"]){
+         res.status(400);
+         res.send(single_item_parsing_status["error"])
+         console.log(single_item_parsing_status["error"])
+         return
+      }
+   }
+   await save_db();
+   res.status(200);
+}
+
+async function single_item_update(item_data){
+   const res = {
+      "success": true
+   }
+   const [id_to_buy, amount] = [item_data["id_to_buy"], item_data["product_amount"]]
+   console.log(id_to_buy);
+   console.log(database_content[id_to_buy]);
    if (! (id_to_buy in  database_content)){
-      res.status(400)
-      res.send("product doesn't exists")
-      return;
+      res["success"] = false;
+      res["error"] = "product doesn't exists";
+      return res;
    }
    if (database_content[id_to_buy]["amount"] < amount){
-      res.status(400)
-      res.send(`not enough supply of the product: ${database_content[id_to_buy]["product_name"]}`)
+      res["success"] = false;
+      res["error"] = `not enough supply of the product: ${database_content[id_to_buy]["product_name"]}`;
+      return res;
    }
-   database_content[id_to_buy]["amount"]-=amount;
-   save_db();
-   res.status(200);
+   database_content[id_to_buy]["amount"] -= amount;
+   console.log(amount);
+   return res;
 }
 
 const server_instace = app.listen(PORT, ()=>console.log(`server runs on port ${PORT}`));

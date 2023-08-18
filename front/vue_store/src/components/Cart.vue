@@ -1,40 +1,33 @@
-<script lang="ts"> 
+<script setup lang="ts"> 
 import { SERVER } from "./../../consts"
 import Product from "./Product.vue"
-import {ref} from "vue"
 
-const products = ref([]);
+import { defineProps } from "vue"
 
-function checkout(){
-    const to_send = JSON.stringify(products);
-    fetch(SERVER+"/buying_items", {
-        method: 'PUT',
-        body:to_send
-    });
-    products.value = [];
-}
-
-function add_item_to_cart(item_property:Record<string, any>){
-    products.value.push(item_property);
-}
-
-function get_products(){
-    return products.value;
-}
-
-console.log(products.value)
+const props = defineProps(["products"]);
 
 
 
 </script>
 
 <template>
-    <div @add_item_to_cart="add_item_to_cart()">
-        <Product v-for="(product, index) in products" v-bind:key="product['product_id']" 
+<div>
+    <div @add_item_to_cart="add_item_to_cart()" class="cart">
+    <div  v-if="props" >
+        <Product v-for="(product, index) in props.products" v-bind:key="product['product_id']" 
             :product_name="product['product_name']" :product_img="product['product_img']"
         :product_id="product['product_id']" :product_price="product['product_price']"
         :product_description="product['product_description']" :product_amount="product['product_amount']"
-        ></Product>
-        <button @click="checkout()">check-out</button>
+        >
+        </Product>
     </div>
+     <v-btn @click="$emit('checkout')">check-out</v-btn>
+    </div>
+</div>
 </template>
+<style scoped>
+.cart{
+      align-items: center;
+}
+</style>
+

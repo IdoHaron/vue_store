@@ -6,6 +6,7 @@ import  ProductToBuy from './components/ProductToBuy.vue'
 import Cart from "./components/Cart.vue"
 import {SERVER} from "./../consts"
 let answer= ref([]);
+const products_in_cart = ref([]);
 fetch(SERVER+"/items", {
   "headers": {
     "Content-Type": "application/json"
@@ -17,17 +18,53 @@ fetch(SERVER+"/items", {
   answer.value = JSON.parse(tex);
   console.log(answer.value);
 });
+
+function add_item_to_cart(event, item_property:Record<string, any>){
+    products_in_cart.value.push(item_property);
+}
+
+function checkout(){
+    const all_items = [];
+    console.log(products_in_cart.value);
+    for (let i = 0; i<products_in_cart.value.length; i++){
+      all_items.push({
+        "id_to_buy": products_in_cart.value[i]["product_id"],
+        "product_amount": products_in_cart.value[i]["product_amount"]
+      })
+    }
+    const to_send = JSON.stringify(all_items);
+    console.log(to_send)
+    fetch(SERVER+"/buying_items", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body:to_send
+    }).catch(async (error)=>{
+      console.log(await error.text);
+      console.log("here, error handling");
+    });
+    products_in_cart.value = [];
+}
+
 </script>
 
 <template>
-  <div class="ProductDesign">
-    <ProductToBuy v-for="product in answer" v-bind:key="product['product_id']" 
-    :product_name="product['product_name']" :product_img="product['product_image']"
-    :product_id="product['product_id']" :product_price="product['product_price']"
-    :product_description="product['product_description']" :product_amount="product['product_amount']">
-  </ProductToBuy>
+<v-app>
+  <div>
+    <div class="ProductDesign" >
+      <ProductToBuy v-for="product in answer" v-bind:key="product['product_id']" 
+      :product_name="product['product_name']" :product_img="product['product_image']"
+      :product_id="product['product_id']" :product_price="product['product_price']"
+      :product_description="product['product_description']" :product_amount="product['product_amount']"
+      @add_item_to_cart="add_item_to_cart">
+    </ProductToBuy>
+    </div>
+    <v-navigation-drawer v-app>
+    <Cart :products="products_in_cart" @checkout="checkout" />
+    </v-navigation-drawer>
   </div>
-  <Cart />
+</v-app>
 </template>
 
 <style scoped>
@@ -101,3 +138,4 @@ nav a:first-of-type {
   }
 }
 </style>
+

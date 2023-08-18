@@ -11,7 +11,8 @@
         "product_name": "steak",
         "product_descrption": "a raw steak",
         "product_image": "https://cdn.shopify.com/s/files/1/0338/9934/8108/files/how-to-tell-if-raw-steak-is-bad-or-spoiled-2_480x480.jpg?v=1642469895",
-        "product_amount": 5
+        "product_amount": 5,
+        "amount": null
     },
     "2": {
         "product_price": 2,
