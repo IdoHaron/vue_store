@@ -60,7 +60,7 @@ function checkout(){
       @add_item_to_cart="add_item_to_cart">
     </ProductToBuy>
     </div>
-    <v-navigation-drawer v-app>
+    <v-navigation-drawer v-app :width="325">
     <Cart :products="products_in_cart" @checkout="checkout" />
     </v-navigation-drawer>
   </div>
